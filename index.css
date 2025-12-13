@@ -21,6 +21,88 @@ body {
   font-weight: 700;
   font-family: century gothic;
 }
+#bomb {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  width: 140px;
+  height: 190px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#bomb.active {
+  opacity: 1;
+}
+.bomb-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 30% 30%, #444 0, #222 40%, #000 75%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+.shine {
+  position: absolute;
+  top: 18px;
+  left: 25px;
+  width: 20px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  transform: rotate(-20deg);
+}
+.fuse {
+  position: absolute;
+  width: 14px;
+  height: 70px;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%) rotate(18deg);
+  transform-origin: bottom center;
+  background: linear-gradient(90deg, #b5651d, #f7d08a, #b5651d);
+  border-radius: 12px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  animation: fuse-pulse 1.2s ease-in-out infinite alternate;
+}
+.spark {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -78px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff89a 0, #f7c331 45%, #ff5722 75%, rgba(255, 87, 34, 0));
+  opacity: 0;
+  box-shadow: 0 0 15px rgba(255, 215, 64, 0.7);
+}
+#bomb.active .spark {
+  animation: spark-flicker 0.85s infinite ease-in-out;
+}
+.explosion {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translateX(-50%) scale(0.2);
+  background: radial-gradient(circle, #fff 0, #ffeb3b 35%, #ff9800 60%, rgba(255, 152, 0, 0) 80%);
+  border-radius: 50%;
+  opacity: 0;
+}
+#bomb.exploded .bomb-body,
+#bomb.exploded .spark,
+#bomb.exploded .fuse {
+  opacity: 0;
+}
+#bomb.exploded .explosion {
+  animation: boom 1s forwards ease-out;
+}
 #hide,
 #toggle,
 #reset,
@@ -115,4 +197,42 @@ body {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+@keyframes spark-flicker {
+  0% {
+    opacity: 0.3;
+    transform: translateX(-50%) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.15);
+  }
+  100% {
+    opacity: 0.25;
+    transform: translateX(-50%) scale(0.85);
+  }
+}
+@keyframes boom {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) scale(0.2);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) scale(2.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scale(3);
+  }
+}
+@keyframes fuse-pulse {
+  0% {
+    filter: brightness(0.9);
+    box-shadow: 0 0 5px rgba(255, 215, 64, 0.35);
+  }
+  100% {
+    filter: brightness(1.1);
+    box-shadow: 0 0 12px rgba(255, 215, 64, 0.75);
+  }
 }
