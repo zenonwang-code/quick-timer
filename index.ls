@@ -10,7 +10,6 @@ stop-by = null
 delay = 60000
 audio-remind = null
 audio-end = null
-bomb-node = null
 
 new-audio = (file) ->
   node = new Audio!
@@ -25,20 +24,6 @@ sound-toggle = (des, state) ->
   else des
     ..currentTime = 0
     ..pause!
-
-bomb-activate = ->
-  bomb-node ||= $ \#bomb
-  bomb-node.removeClass \exploded
-  if delay > 0 => bomb-node.addClass \active
-
-bomb-stop = ->
-  bomb-node ||= $ \#bomb
-  bomb-node.removeClass \active \exploded
-
-bomb-explode = ->
-  bomb-node ||= $ \#bomb
-  bomb-node.removeClass \active
-  bomb-node.addClass \exploded
 
 show = ->
   is-show := !is-show
@@ -55,14 +40,12 @@ adjust = (it,v) ->
 toggle = ->
   is-run := !is-run
   $ \#toggle .text if is-run => "STOP" else "RUN"
-  if !is-run =>
-    if handler =>
-      stop-by := new Date!
-      clearInterval handler
-      handler := null
+  if !is-run and handler => 
+    stop-by := new Date!
+    clearInterval handler
+    handler := null
     sound-toggle audio-end, false
     sound-toggle audio-remind, false
-    bomb-stop!
   if stop-by =>
     latency := latency + (new Date!)getTime! - stop-by.getTime!
   if is-run => run!
@@ -83,7 +66,6 @@ reset = ->
   $ \#timer .text delay
   $ \#timer .css \color, \#fff
   resize!
-  bomb-stop!
 
 
 blink = ->
@@ -103,7 +85,6 @@ count = ->
     sound-toggle audio-end, true
     is-blink := true
     diff = 0
-    bomb-explode!
     clearInterval handler
     handler := setInterval ( -> blink!), 500
   tm.text "#{diff}"
@@ -114,12 +95,9 @@ run =  ->
     start := new Date!
     latency := 0
     is-blink := false
-    bomb-activate!
   if handler => clearInterval handler
   if is-blink => handler := setInterval (-> blink!), 500
-  else
-    bomb-activate!
-    handler := setInterval (-> count!), 100
+  else handler := setInterval (-> count!), 100
 
 resize = ->
   tm = $ \#timer
