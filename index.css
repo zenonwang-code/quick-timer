@@ -116,3 +116,117 @@ body {
   top: 10px;
   left: 10px;
 }
+#firecracker {
+  --remaining: 100%;
+  --spark-top: 0%;
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+}
+.firecracker-body {
+  position: relative;
+  width: 28px;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #870000 0%, #b30000 40%, #870000 80%);
+  border: 2px solid #f1c40f;
+  box-shadow: 0 0 18px rgba(255, 99, 71, 0.35);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.firecracker-remaining {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: var(--remaining);
+  background: repeating-linear-gradient( to bottom, #d0021b, #d0021b 14px, #f4c542 14px, #f4c542 18px);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
+  transition: height 0.2s linear;
+}
+.firecracker-rope {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 18px;
+  background: repeating-linear-gradient(45deg, #f4c542 0, #f4c542 4px, #d35400 4px, #d35400 8px);
+  border-radius: 10px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
+}
+.firecracker-spark {
+  position: absolute;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  top: var(--spark-top);
+  background: radial-gradient(circle at 30% 30%, #fff176 0, #ffa726 30%, rgba(255, 87, 34, 0.9) 60%, rgba(255, 255, 255, 0) 70%);
+  filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.8));
+  opacity: 0;
+  animation: spark-flicker 0.8s infinite;
+}
+#firecracker.is-burning .firecracker-spark {
+  opacity: 1;
+}
+.firecracker-explosion {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  opacity: 0;
+  color: #ffe082;
+  text-shadow: 0 0 8px #ffc107, 0 0 18px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+#firecracker.exploded .firecracker-explosion {
+  opacity: 1;
+  animation: burst 0.8s ease-out forwards;
+}
+.firecracker-shadow {
+  margin-top: 8px;
+  width: 60px;
+  height: 8px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 70%);
+}
+@keyframes spark-flicker {
+  0% {
+    transform: translate(-50%, 0) scale(0.9);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -4px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 0) scale(0.92);
+    opacity: 0.8;
+  }
+}
+@keyframes burst {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
